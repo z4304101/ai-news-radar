@@ -9,7 +9,7 @@
 # 5. 算力中心 / 机房 / 租赁 / 私有部署 / 算电协同
 # 6. 芯片 / 存储 / 液冷 / AI服务器 / 网络 / 运维维保
 #
-# 尽量过滤娱乐、体育、币圈及泛社会热点。
+# 中英文关键词并行，海外源也只围绕上述范围过滤。
 #
 # 规则：
 # - [组名]：显示分组名称
@@ -37,7 +37,7 @@
 # 1. 核心 AI / 大模型
 # ───────────────────────────────────────────────────────────────
 [AI 大模型]
-/(?<![A-Za-z])AI(?![A-Za-z])|人工智能|大模型|LLM|AIGC|生成式AI|生成式人工智能|多模态|推理模型|基础模型|Foundation Model/
+/(?<![A-Za-z])AI(?![A-Za-z])|人工智能|大模型|LLM|AIGC|生成式AI|生成式人工智能|Generative AI|Foundation Model|Large Language Model|Multimodal|Reasoning Model|推理模型|基础模型/
 @3
 
 
@@ -53,7 +53,7 @@
 # 3. Agent / MCP / AI 开发生态
 # ───────────────────────────────────────────────────────────────
 [Agent 与 AI 开发生态]
-/AI Agent|Agentic AI|智能体|MCP|Model Context Protocol|RAG|检索增强|Function Calling|Tool Calling|Agent Framework|多智能体|Multi-Agent|AI Coding|代码智能体|Coding Agent|工作流自动化/
+/AI Agent|Agentic AI|AI agents|智能体|MCP|Model Context Protocol|RAG|Retrieval-Augmented Generation|Function Calling|Tool Calling|Agent Framework|多智能体|Multi-Agent|AI Coding|代码智能体|Coding Agent|工作流自动化|Agentic Workflow/
 @3
 
 
@@ -61,7 +61,7 @@
 # 4. GPU / AI 芯片 / 算力
 # ───────────────────────────────────────────────────────────────
 [GPU 与算力芯片]
-/算力|AI芯片|算力芯片|GPU|NPU|TPU|DPU|ASIC|HBM|CUDA|NVIDIA|英伟达|AMD|Instinct|MI300|MI350|昇腾|Ascend|Gaudi|Blackwell|Rubin|Hopper|Grace Blackwell|寒武纪|海光|沐曦|燧原|壁仞|天数智芯/
+/算力|AI芯片|算力芯片|AI accelerator|accelerator chip|GPU|NPU|TPU|DPU|ASIC|HBM|CUDA|NVIDIA|英伟达|AMD|Instinct|MI300|MI350|昇腾|Ascend|Gaudi|Blackwell|Rubin|Hopper|Grace Blackwell|寒武纪|海光|沐曦|燧原|壁仞|天数智芯/
 @3
 
 
@@ -69,7 +69,7 @@
 # 5. 智算中心 / 数据中心
 # ───────────────────────────────────────────────────────────────
 [智算中心与数据中心]
-/智算中心|AI数据中心|AIDC|数据中心|算力中心|GPU集群|算力集群|算力云|云算力|机柜功率|PUE|IDC/
+/智算中心|AI数据中心|AIDC|数据中心|算力中心|GPU集群|算力集群|算力云|云算力|机柜功率|PUE|IDC|AI data center|data center|data centre|GPU cluster|compute cluster|AI infrastructure|hyperscale/
 @3
 
 
@@ -77,9 +77,9 @@
 # 6. API / Token / 推理价格
 # ───────────────────────────────────────────────────────────────
 [API 与 Token 价格]
-/(?:API|模型|大模型|推理|Inference).{0,16}(?:Token|token|价格|降价|涨价|计费|费率|成本|套餐|额度|免费额度)/
-/(?:Token|token|价格|降价|涨价|计费|费率|成本|套餐|额度).{0,16}(?:API|模型|大模型|推理|Inference)/
-/百万Token|每百万Token|输入Token|输出Token|API定价|模型定价|推理成本|调用价格|API价格|价格战/
+/(?:API|模型|大模型|推理|Inference|model).{0,16}(?:Token|token|价格|降价|涨价|计费|费率|成本|套餐|额度|免费额度|pricing|price|cost|rate)/
+/(?:Token|token|价格|降价|涨价|计费|费率|成本|套餐|额度|pricing|price|cost|rate).{0,16}(?:API|模型|大模型|推理|Inference|model)/
+/百万Token|每百万Token|输入Token|输出Token|API定价|模型定价|推理成本|调用价格|API价格|价格战|per million tokens|input tokens|output tokens|inference cost/
 @3
 
 
@@ -87,9 +87,9 @@
 # 7. AI 新公司 / 融资 / 并购
 # ───────────────────────────────────────────────────────────────
 [AI 新公司与融资]
-/(?:AI|人工智能|大模型|智能体|机器人|算力).{0,18}(?:创业|初创|Startup|融资|募资|投资|估值|并购|收购|IPO)/
-/(?:创业|初创|Startup|融资|募资|投资|估值|并购|收购|IPO).{0,18}(?:AI|人工智能|大模型|智能体|机器人|算力)/
-/AI独角兽|人工智能独角兽|AI创业公司|AI初创公司/
+/(?:AI|人工智能|大模型|智能体|机器人|算力).{0,18}(?:创业|初创|Startup|融资|募资|投资|估值|并购|收购|IPO|funding|fundraise|valuation|acquisition)/
+/(?:创业|初创|Startup|融资|募资|投资|估值|并购|收购|IPO|funding|fundraise|valuation|acquisition).{0,18}(?:AI|人工智能|大模型|智能体|机器人|算力)/
+/AI独角兽|人工智能独角兽|AI创业公司|AI初创公司|AI startup/
 @3
 
 
@@ -110,8 +110,8 @@
 # 9. 方向政策
 # ───────────────────────────────────────────────────────────────
 [方向政策]
-/(?:AI|人工智能|大模型|算力|智能体|数据中心|智算).{0,20}(?:政策|监管|法规|条例|标准|规划|补贴|产业基金|行动方案|指导意见|试点示范)/
-/(?:政策|监管|法规|条例|标准|规划|补贴|产业基金|行动方案|指导意见|试点示范).{0,20}(?:AI|人工智能|大模型|算力|智能体|数据中心|智算)/
+/(?:AI|人工智能|大模型|算力|智能体|数据中心|智算|data center|data centre|compute infrastructure).{0,24}(?:政策|监管|法规|条例|标准|规划|补贴|产业基金|行动方案|指导意见|试点示范|policy|regulation|law|standard|roadmap|subsidy|strategy)/
+/(?:政策|监管|法规|条例|标准|规划|补贴|产业基金|行动方案|指导意见|试点示范|policy|regulation|law|standard|roadmap|subsidy|strategy).{0,24}(?:AI|人工智能|大模型|算力|智能体|数据中心|智算|data center|data centre|compute infrastructure)/
 @3
 
 
@@ -119,9 +119,9 @@
 # 10. 行业报告
 # ───────────────────────────────────────────────────────────────
 [行业报告]
-/(?:AI|人工智能|大模型|算力|数据中心|智算|芯片|GPU).{0,20}(?:白皮书|蓝皮书|行业报告|研究报告|产业报告|市场报告|年度报告|季度报告|趋势报告|研报)/
-/(?:白皮书|蓝皮书|行业报告|研究报告|产业报告|市场报告|年度报告|季度报告|趋势报告|研报).{0,20}(?:AI|人工智能|大模型|算力|数据中心|智算|芯片|GPU)/
-/信通院|Gartner|IDC报告|艾瑞咨询|亿欧智库/
+/(?:AI|人工智能|大模型|算力|数据中心|智算|芯片|GPU|data center|data centre|semiconductor|AI infrastructure).{0,24}(?:白皮书|蓝皮书|行业报告|研究报告|产业报告|市场报告|年度报告|季度报告|趋势报告|研报|report|whitepaper|white paper|market study|industry outlook|forecast)/
+/(?:白皮书|蓝皮书|行业报告|研究报告|产业报告|市场报告|年度报告|季度报告|趋势报告|研报|report|whitepaper|white paper|market study|industry outlook|forecast).{0,24}(?:AI|人工智能|大模型|算力|数据中心|智算|芯片|GPU|data center|data centre|semiconductor|AI infrastructure)/
+/信通院|Gartner|IDC报告|艾瑞咨询|亿欧智库|SemiAnalysis/
 @3
 
 
@@ -129,7 +129,7 @@
 # 11. 技术社区
 # ───────────────────────────────────────────────────────────────
 [技术社区]
-/GitHub|Hugging Face|arXiv|开源社区|开发者社区|技术博客|开源项目|模型开源|开源模型|论文发布/
+/GitHub|Hugging Face|Hacker News|arXiv|开源社区|开发者社区|技术博客|开源项目|模型开源|开源模型|论文发布|open source|developer blog|technical blog|research paper/
 @3
 
 
@@ -137,8 +137,8 @@
 # 12. 算力投资
 # ───────────────────────────────────────────────────────────────
 [算力投资]
-/(?:算力|智算|数据中心|AIDC|GPU).{0,20}(?:投资|资本开支|CAPEX|项目签约|项目落地|项目建设|产业投资)/
-/(?:投资|资本开支|CAPEX|项目签约|项目落地|项目建设|产业投资).{0,20}(?:算力|智算|数据中心|AIDC|GPU)/
+/(?:算力|智算|数据中心|AIDC|GPU|AI infrastructure|data center|data centre|GPU capacity|compute capacity).{0,24}(?:投资|资本开支|CAPEX|项目签约|项目落地|项目建设|产业投资|investment|capital expenditure|capex|funding|expansion|buildout|build-out)/
+/(?:投资|资本开支|CAPEX|项目签约|项目落地|项目建设|产业投资|investment|capital expenditure|capex|funding|expansion|buildout|build-out).{0,24}(?:算力|智算|数据中心|AIDC|GPU|AI infrastructure|data center|data centre|GPU capacity|compute capacity)/
 @3
 
 
@@ -151,7 +151,7 @@
 # 13. AI 智能体
 # ───────────────────────────────────────────────────────────────
 [AI 智能体应用]
-/AI Agent|Agentic AI|企业智能体|企业Agent|多智能体|Multi-Agent|MCP|RAG|Tool Calling|Function Calling|工作流自动化/
+/AI Agent|AI agents|Agentic AI|企业智能体|企业Agent|多智能体|Multi-Agent|MCP|RAG|Tool Calling|Function Calling|工作流自动化|agentic workflow|enterprise agent/
 @3
 
 
@@ -159,7 +159,7 @@
 # 14. AI 大模型应用
 # ───────────────────────────────────────────────────────────────
 [AI 大模型应用]
-/大模型应用|大模型落地|模型部署|推理服务|模型服务|企业大模型|行业大模型|模型API|AI应用平台/
+/大模型应用|大模型落地|模型部署|推理服务|模型服务|企业大模型|行业大模型|模型API|AI应用平台|model deployment|model serving|inference service|AI platform|enterprise AI|LLM deployment|LLM serving/
 @3
 
 
@@ -167,7 +167,7 @@
 # 15. 算力消纳
 # ───────────────────────────────────────────────────────────────
 [算力消纳]
-/算力消纳|算力调度|算力交易|算力供需|供需匹配|闲置算力|算力券|算网协同|算力并网|算力利用率|算力服务平台/
+/算力消纳|算力调度|算力交易|算力供需|供需匹配|闲置算力|算力券|算网协同|算力并网|算力利用率|算力服务平台|GPU utilization|compute utilization|capacity utilization|GPU scheduling|compute scheduling|capacity marketplace|compute marketplace/
 @3
 
 
@@ -175,7 +175,7 @@
 # 16. 数智转型
 # ───────────────────────────────────────────────────────────────
 [数智转型]
-/数智转型|数智化|数字化转型|企业数字化|企业智能化|智能化升级|AI落地|AI应用落地|行业智能化|工业智能化|制造业数字化/
+/数智转型|数智化|数字化转型|企业数字化|企业智能化|智能化升级|AI落地|AI应用落地|行业智能化|工业智能化|制造业数字化|digital transformation|AI transformation|enterprise AI adoption|AI adoption|industrial AI|smart manufacturing/
 @3
 
 
@@ -188,7 +188,7 @@
 # 17. 机房建设
 # ───────────────────────────────────────────────────────────────
 [机房建设]
-/机房建设|数据中心建设|智算中心建设|AIDC建设|机柜上架|上架率|供配电|UPS|柴发|园区建设|机房交付|PUE/
+/机房建设|数据中心建设|智算中心建设|AIDC建设|机柜上架|上架率|供配电|UPS|柴发|园区建设|机房交付|PUE|data center construction|data centre construction|data center build|data centre build|campus development|rack deployment|power infrastructure|UPS system|generator|commissioning/
 @3
 
 
@@ -196,7 +196,7 @@
 # 18. 运营租赁
 # ───────────────────────────────────────────────────────────────
 [运营租赁]
-/算力租赁|GPU租赁|服务器租赁|机柜租赁|机房租赁|IDC托管|Colocation|算力运营|运维运营|带宽租赁/
+/算力租赁|GPU租赁|服务器租赁|机柜租赁|机房租赁|IDC托管|Colocation|算力运营|运维运营|带宽租赁|GPU rental|GPU cloud|compute rental|server rental|data center leasing|data centre leasing|colocation|colo capacity|rack leasing|managed hosting/
 @3
 
 
@@ -204,7 +204,7 @@
 # 19. 私有部署
 # ───────────────────────────────────────────────────────────────
 [私有部署]
-/私有化部署|本地部署|本地化部署|私有云|混合云|专属云|一体机|训推一体机|企业私有模型|本地模型|离线部署/
+/私有化部署|本地部署|本地化部署|私有云|混合云|专属云|一体机|训推一体机|企业私有模型|本地模型|离线部署|private deployment|on-prem|on premises|on-premises|private cloud|hybrid cloud|sovereign cloud|local deployment|air-gapped|AI appliance/
 @3
 
 
@@ -212,7 +212,7 @@
 # 20. 算电协同
 # ───────────────────────────────────────────────────────────────
 [算电协同]
-/算电协同|源网荷储|绿色算力|绿电|电力保障|数据中心能耗|能耗管理|双碳|节能降耗|能源调度|可再生能源/
+/算电协同|源网荷储|绿色算力|绿电|电力保障|数据中心能耗|能耗管理|双碳|节能降耗|能源调度|可再生能源|data center power|data centre power|grid connection|grid capacity|power demand|power supply|energy demand|renewable power|green power|PPA|power purchase agreement|energy efficiency/
 @3
 
 
@@ -225,7 +225,7 @@
 # 21. 芯片
 # ───────────────────────────────────────────────────────────────
 [芯片]
-/AI芯片|算力芯片|GPU|NPU|TPU|DPU|ASIC|HBM|CUDA|NVIDIA|英伟达|AMD|昇腾|Ascend|寒武纪|海光|沐曦|燧原|壁仞|天数智芯/
+/AI芯片|算力芯片|AI accelerator|GPU|NPU|TPU|DPU|ASIC|HBM|CUDA|NVIDIA|英伟达|AMD|昇腾|Ascend|寒武纪|海光|沐曦|燧原|壁仞|天数智芯|semiconductor|AI chip|accelerator chip|GPU accelerator|chiplet|advanced packaging/
 @3
 
 
@@ -233,8 +233,8 @@
 # 22. 存储
 # ───────────────────────────────────────────────────────────────
 [算力存储]
-/(?:AI|算力|数据中心|智算|服务器).{0,16}(?:存储|NVMe|SSD|对象存储|分布式存储|高性能存储|并行文件系统|全闪|存算一体|Ceph)/
-/(?:存储|NVMe|SSD|对象存储|分布式存储|高性能存储|并行文件系统|全闪|存算一体|Ceph).{0,16}(?:AI|算力|数据中心|智算|服务器)/
+/(?:AI|算力|数据中心|智算|服务器|GPU|data center|data centre|AI workload|AI training).{0,20}(?:存储|NVMe|SSD|对象存储|分布式存储|高性能存储|并行文件系统|全闪|存算一体|Ceph|storage|object storage|distributed storage|parallel file system|all-flash|NVMe-oF)/
+/(?:存储|NVMe|SSD|对象存储|分布式存储|高性能存储|并行文件系统|全闪|存算一体|Ceph|storage|object storage|distributed storage|parallel file system|all-flash|NVMe-oF).{0,20}(?:AI|算力|数据中心|智算|服务器|GPU|data center|data centre|AI workload|AI training)/
 @3
 
 
@@ -242,7 +242,7 @@
 # 23. 液冷
 # ───────────────────────────────────────────────────────────────
 [液冷与散热]
-/液冷|冷板液冷|浸没式液冷|散热系统|热管理|温控系统|风冷/
+/液冷|冷板液冷|浸没式液冷|散热系统|热管理|温控系统|风冷|liquid cooling|direct liquid cooling|DLC|cold plate|cold-plate|immersion cooling|thermal management|data center cooling|data centre cooling/
 @3
 
 
@@ -250,7 +250,7 @@
 # 24. AI 服务器
 # ───────────────────────────────────────────────────────────────
 [AI 服务器]
-/AI服务器|GPU服务器|训练服务器|推理服务器|高密服务器|机架服务器|算力服务器|服务器集群/
+/AI服务器|GPU服务器|训练服务器|推理服务器|高密服务器|机架服务器|算力服务器|服务器集群|AI server|GPU server|training server|inference server|rack-scale|rack scale|AI rack|GPU rack|server cluster/
 @3
 
 
@@ -258,7 +258,7 @@
 # 25. 网络
 # ───────────────────────────────────────────────────────────────
 [算力网络]
-/光模块|800G光模块|1\.6T光模块|InfiniBand|RoCE|CPO|AOC|DAC|NVLink|高速互联|数据中心网络|高速交换机/
+/光模块|800G光模块|1\.6T光模块|InfiniBand|RoCE|CPO|AOC|DAC|NVLink|高速互联|数据中心网络|高速交换机|optical module|optical transceiver|800G|1\.6T|Ethernet fabric|AI networking|data center network|data centre network|high-speed switch|switch fabric/
 @3
 
 
@@ -266,6 +266,6 @@
 # 26. 维保
 # ───────────────────────────────────────────────────────────────
 [运维与维保]
-/(?:数据中心|智算|算力|GPU|AI服务器).{0,16}(?:运维|维保|巡检|驻场|SLA|备件|故障处理|故障排查|监控平台|设备维护|资产管理)/
-/(?:运维|维保|巡检|驻场|SLA|备件|故障处理|故障排查|监控平台|设备维护|资产管理).{0,16}(?:数据中心|智算|算力|GPU|AI服务器)/
+/(?:数据中心|智算|算力|GPU|AI服务器|data center|data centre|GPU|AI server).{0,20}(?:运维|维保|巡检|驻场|SLA|备件|故障处理|故障排查|监控平台|设备维护|资产管理|operations|maintenance|monitoring|inspection|field service|spare parts|fault management|incident management|asset management)/
+/(?:运维|维保|巡检|驻场|SLA|备件|故障处理|故障排查|监控平台|设备维护|资产管理|operations|maintenance|monitoring|inspection|field service|spare parts|fault management|incident management|asset management).{0,20}(?:数据中心|智算|算力|GPU|AI服务器|data center|data centre|GPU|AI server)/
 @3
