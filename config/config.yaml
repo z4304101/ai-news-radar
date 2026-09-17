@@ -106,9 +106,9 @@ rss:
       url: "https://blocksandfiles.com/feed/"
 
     # 行业分析 / 算力投资 / 芯片与AI基础设施
-    - id: "semianalysis"
-      name: "SemiAnalysis"
-      url: "https://semianalysis.substack.com/feed"
+    - id: "the-next-platform"
+      name: "The Next Platform"
+      url: "https://www.nextplatform.com/feed/"
 
     # 保留但默认关闭，避免泛科技内容扩大噪音
     - id: "ruanyifeng"
