@@ -52,16 +52,64 @@ rss:
     enabled: true
     max_age_days: 1
   feeds:
+    # 技术社区
     - id: "hacker-news"
       name: "Hacker News"
       url: "https://hnrss.org/frontpage"
+
+    # AI 大模型 / 智能体
+    - id: "openai-news"
+      name: "OpenAI News"
+      url: "https://openai.com/news/rss.xml"
+
+    # 芯片 / AI服务器 / 网络 / 算力基础设施
+    - id: "nvidia-news"
+      name: "NVIDIA Newsroom"
+      url: "https://nvidianews.nvidia.com/releases.xml"
+    - id: "nvidia-developer"
+      name: "NVIDIA Developer Blog"
+      url: "https://developer.nvidia.com/blog/feed"
+
+    # AI应用 / 私有部署 / 数智转型
+    - id: "aws-machine-learning"
+      name: "AWS Machine Learning Blog"
+      url: "https://aws.amazon.com/blogs/machine-learning/feed/"
+    - id: "google-cloud"
+      name: "Google Cloud Blog"
+      url: "https://cloudblog.withgoogle.com/rss/"
+
+    # 算力中心：建设 / 租赁 / 投资 / 算电协同 / 液冷 / 运维
+    - id: "datacenter-dynamics"
+      name: "Data Center Dynamics"
+      url: "https://www.datacenterdynamics.com/en/rss/news"
+    - id: "datacenter-knowledge"
+      name: "Data Center Knowledge"
+      url: "https://www.datacenterknowledge.com/rss.xml"
+
+    # 算力设施：服务器 / 芯片 / 网络 / 存储 / 液冷
+    - id: "servethehome"
+      name: "ServeTheHome"
+      url: "https://www.servethehome.com/feed/"
+    - id: "semiconductor-engineering"
+      name: "Semiconductor Engineering"
+      url: "https://semiengineering.com/feed/"
+    - id: "ieee-semiconductors"
+      name: "IEEE Spectrum Semiconductors"
+      url: "https://spectrum.ieee.org/feeds/topic/semiconductors.rss"
+    - id: "blocks-and-files"
+      name: "Blocks & Files"
+      url: "https://blocksandfiles.com/feed/"
+
+    # 行业分析 / 算力投资 / 芯片与AI基础设施
+    - id: "semianalysis"
+      name: "SemiAnalysis"
+      url: "https://semianalysis.substack.com/feed"
+
+    # 保留但默认关闭，避免泛科技内容扩大噪音
     - id: "ruanyifeng"
       name: "阮一峰的网络日志"
       url: "http://www.ruanyifeng.com/blog/atom.xml"
       enabled: false
-    - id: "yahoo-finance"
-      name: "雅虎财经"
-      url: "https://finance.yahoo.com/news/rssindex"
 
 report:
   # Only push newly discovered matching news. This avoids repeatedly pushing
