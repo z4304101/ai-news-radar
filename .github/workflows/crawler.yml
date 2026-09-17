@@ -2,8 +2,8 @@ name: Get Hot News
 
 on:
   schedule:
-    # Poll every 10 minutes for near-real-time alerts.
-    - cron: "*/10 * * * *"
+    # Poll every 10 minutes on offset minute marks to reduce GitHub cron congestion.
+    - cron: "7,17,27,37,47,57 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -29,7 +29,7 @@ jobs:
       # Incremental mode needs the previous SQLite/output state. GitHub-hosted
       # runners are ephemeral, so persist output/ between runs with Actions cache.
       - name: Restore TrendRadar state
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: output
           key: trendradar-output-${{ github.ref_name }}-${{ github.run_id }}
