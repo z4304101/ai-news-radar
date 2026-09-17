@@ -57,6 +57,11 @@ rss:
       name: "Hacker News"
       url: "https://hnrss.org/frontpage"
 
+    # 方向政策 / 标准 / 行业报告
+    - id: "nist-news"
+      name: "NIST News"
+      url: "https://www.nist.gov/news-events/news/rss.xml"
+
     # AI 大模型 / 智能体
     - id: "openai-news"
       name: "OpenAI News"
