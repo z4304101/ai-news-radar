@@ -2,8 +2,8 @@ name: Get Hot News
 
 on:
   schedule:
-    # Keep hourly for now to control GitHub Actions usage.
-    - cron: "33 * * * *"
+    # Poll every 30 minutes. Using off-peak minute marks helps reduce GitHub cron delays.
+    - cron: "17,47 * * * *"
   workflow_dispatch:
 
 concurrency:
