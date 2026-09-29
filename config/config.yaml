@@ -221,8 +221,8 @@ ai:
   num_retries: 1
   fallback_models: []
 
-# Disabled for now: the first optimization pass focuses on fast, deterministic
-# filtering and avoids unnecessary AI API calls / long analysis payloads.
+# AI analysis is enabled for each incremental push. Keep the payload concise
+# to control latency, token usage, and mobile notification length.
 ai_analysis:
   enabled: true
   language: "Chinese"
@@ -230,7 +230,7 @@ ai_analysis:
   mode: "incremental"
   max_news_for_analysis: 40
   include_rss: true
-  include_standalone: true
+  include_standalone: false
   include_rank_timeline: true
 
 ai_translation:
