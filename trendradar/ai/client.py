@@ -33,6 +33,13 @@ class AIClient:
         self.model = config.get("MODEL", "deepseek/deepseek-chat")
         self.api_key = config.get("API_KEY") or os.environ.get("AI_API_KEY", "")
         self.api_base = config.get("API_BASE", "")
+
+        # SiliconFlow exposes an OpenAI-compatible endpoint. LiteLLM needs the
+        # openai/ provider prefix even though SiliconFlow model IDs themselves
+        # look like "deepseek-ai/DeepSeek-V4-Flash".
+        if self.api_base and "siliconflow" in self.api_base.lower() and not self.model.startswith("openai/"):
+            self.model = f"openai/{self.model}"
+
         self.temperature = config.get("TEMPERATURE", 1.0)
         self.max_tokens = config.get("MAX_TOKENS", 5000)
         self.timeout = config.get("TIMEOUT", 120)
