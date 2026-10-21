@@ -1,3 +1,34 @@
+# ai-news-radar
+
+> **项目来源与原创作者致谢 / Attribution & Acknowledgements**
+>
+> 本仓库是基于 [**TrendRadar**](https://github.com/sansan0/TrendRadar) 创建并定制的**二次开发版本**，并非 TrendRadar 的官方发行版。TrendRadar 的原始架构、新闻采集、RSS、通知、AI 分析等基础能力来自原创作者 **[sansan0](https://github.com/sansan0)** 及开源社区贡献者，在此表示感谢。
+>
+> **This repository is a customized derivative of [TrendRadar](https://github.com/sansan0/TrendRadar), not an official upstream release.** Credit for the original framework and its core features belongs to **sansan0** and the upstream contributors.
+
+### 本仓库的修改与配置 / Changes in this repository
+
+以下是**在原项目已有功能基础上**完成的定制、配置或适配，并非宣称这些基础能力由本仓库原创。主要修改始于 **2026-09-29**：
+
+- **推送节奏：** 将 GitHub Actions 新闻抓取计划调整为每天 3 次，减少通知频率和运行资源消耗。
+- **新闻筛选：** 根据关注方向定制 RSS 来源、关键词及增量推送配置，降低重复新闻带来的干扰。
+- **客观 AI 研判：** 基于 TrendRadar 已有的 AI 分析功能，调整提示词和参数，强调已确认事实、推断、不确定性、不同来源的分歧以及待验证信息。
+- **模型接口适配：** 增加 SiliconFlow OpenAI 兼容接口与 LiteLLM 模型路由的适配处理。
+- **移动端通知：** 对原项目已有的 Bark 通知功能进行个人化配置，便于接收新闻与分析结果。
+
+**English summary:** This derivative customizes the GitHub Actions schedule (three runs daily), RSS/keyword filters and incremental delivery, evidence-focused AI analysis prompts, SiliconFlow/LiteLLM compatibility, and Bark notification settings. These changes build on existing TrendRadar functionality; they are not claims of authorship of its core features.
+
+### 开源协议与说明 / License & Notices
+
+- **上游原项目 / Upstream:** [sansan0/TrendRadar](https://github.com/sansan0/TrendRadar)
+- **本仓库 / This derivative:** [z4304101/ai-news-radar](https://github.com/z4304101/ai-news-radar)
+- **许可证 / License:** [GNU GPL-3.0](LICENSE)。沿用原项目的开源许可并保留相关版权和许可声明；对修改部分作出明确标识。
+- **数据说明：** 下方保留了原项目的 README 介绍及相应徽章。涉及上游 GitHub Stars、Forks、版本与 Docker 下载量等指标时，**均为原项目数据，不代表本仓库的独立成果或使用量**。
+
+---
+
+## TrendRadar 原项目文档（保留原文）
+
 <div align="center" id="trendradar">
 
 <a href="https://github.com/sansan0/TrendRadar" title="TrendRadar">
