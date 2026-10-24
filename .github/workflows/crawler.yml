@@ -118,10 +118,13 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           GENERIC_WEBHOOK_URL: ${{ secrets.GENERIC_WEBHOOK_URL }}
           GENERIC_WEBHOOK_TEMPLATE: ${{ secrets.GENERIC_WEBHOOK_TEMPLATE }}
+          # Temporary Spark-X2.6 trial. Add SPARK_API_KEY as a repository
+          # Actions secret to enable Spark; remove it to restore old AI_* secrets.
+          # Never commit real API keys to this public repository.
           AI_ANALYSIS_ENABLED: ${{ secrets.AI_ANALYSIS_ENABLED }}
-          AI_API_KEY: ${{ secrets.AI_API_KEY }}
-          AI_MODEL: ${{ secrets.AI_MODEL }}
-          AI_API_BASE: ${{ secrets.AI_API_BASE }}
+          AI_API_KEY: ${{ secrets.SPARK_API_KEY || secrets.AI_API_KEY }}
+          AI_MODEL: ${{ secrets.SPARK_API_KEY && 'openai/spark-x2.6' || secrets.AI_MODEL }}
+          AI_API_BASE: ${{ secrets.SPARK_API_KEY && 'https://maas-api.cn-huabei-1.xf-yun.com/v2' || secrets.AI_API_BASE }}
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
           S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
