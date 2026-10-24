@@ -1,0 +1,69 @@
+name: Test Spark API
+
+# Manual, low-token connectivity check. Does not crawl or send notifications.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Call Spark-X2.6 using repository secret
+        env:
+          SPARK_API_KEY: ${{ secrets.SPARK_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import sys
+          import urllib.error
+          import urllib.request
+
+          key = os.environ.get("SPARK_API_KEY", "").strip()
+          if not key:
+              sys.exit("ERROR: Add SPARK_API_KEY under Settings > Secrets and variables > Actions.")
+
+          payload = {
+              "model": "spark-x2.6",
+              "messages": [{"role": "user", "content": "请只回复四个汉字：连接成功"}],
+              "temperature": 0.2,
+              "max_tokens": 80,
+              "enable_thinking": False,
+              "stream": False,
+          }
+          req = urllib.request.Request(
+              "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+              data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+              headers={
+                  "Authorization": "Bearer " + key,
+                  "Content-Type": "application/json",
+              },
+              method="POST",
+          )
+          try:
+              with urllib.request.urlopen(req, timeout=50) as response:
+                  result = json.load(response)
+          except urllib.error.HTTPError as exc:
+              error_code = ""
+              try:
+                  body = json.loads(exc.read(4096).decode("utf-8", errors="replace"))
+                  error_code = str(body.get("code") or body.get("error", {}).get("code") or "")
+              except (ValueError, AttributeError, TypeError):
+                  pass
+              print("Spark HTTP error:", exc.code, "provider code:", error_code[:80])
+              sys.exit(1)
+          except (urllib.error.URLError, TimeoutError) as exc:
+              print("Spark connection error:", type(exc).__name__)
+              sys.exit(1)
+
+          choices = result.get("choices") or []
+          msg = (choices[0].get("message") or {}) if choices else {}
+          answer = msg.get("content") or ""
+          if not answer.strip():
+              sys.exit("ERROR: Spark returned no answer text.")
+          print("PASS: Spark-X2.6 responded successfully. Secret was not logged.")
+          PY
