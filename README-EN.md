@@ -1105,7 +1105,7 @@ Open the pushed HTML report in a browser to unlock an enhanced experience (email
 > 💡 For storage configuration details, see [Configuration Details - Storage Configuration](#11-storage-configuration-v400-new)
 
 ### **Multi-Platform Deployment**
-- **GitHub Actions**: Cloud automated operations (7-day check-in cycle + remote cloud storage)
+- **GitHub Actions**: Scheduled cloud automation + remote cloud storage (this fork does not require a 7-day check-in)
 - **Docker Deployment**: Supports multi-architecture containerized operation
 - **Local Running**: Python environment direct execution
 
@@ -1217,7 +1217,7 @@ Transform from "algorithm recommendation captivity" to "actively getting the inf
 
 * **Features**: Data is stored in **Remote Cloud Storage** (no longer written to Git repo)
 * **Storage**: Configure cloud storage service (e.g. Cloudflare R2, Alibaba Cloud OSS, Tencent Cloud COS, etc.)
-* **Note**: Requires periodic check-in renewal (every 7 days)
+* **Note**: This fork removes the custom 7-day check-in and auto-disable mechanism; manual renewal is not required. GitHub platform-level scheduling and usage limits still apply.
 
 <a id="local-deploy"></a>
 
@@ -1940,16 +1940,13 @@ Templates support two placeholders:
 
    <br>
 
-### 5️⃣ Step 5: GitHub Actions Check-In & Remote Cloud Storage
+### 5️⃣ Step 5: Remote Cloud Storage
 
-   **v4.0.0 Important Change**: Introduced the "Activity Detection" mechanism; GitHub Actions need periodic check-ins to maintain operation.
+   **Fork-specific note**: This version removes the custom 7-day activity-expiry and automatic workflow-disable mechanism. No manual check-in is required to keep `Get Hot News` enabled.
 
-   - **Running Cycle**: Valid for **7 days**—service will automatically suspend when countdown ends.
-   - **Renewal Method**: Manually trigger the "Check In" workflow on the Actions page to reset the 7-day validity period.
-   - **Operation Path**: `Actions` → `Check In` → `Run workflow`
-   - **Design Philosophy**:
-     - If you forget for 7 days, maybe you don't really need it. Letting it stop is a digital detox, freeing you from the constant impact.
-     - GitHub Actions is a valuable public computing resource. The check-in mechanism aims to prevent wasted computing cycles, ensuring resources are allocated to truly active users who need them. Thank you for your understanding and support.
+   - **Automatic runs**: `Get Hot News` follows the cron schedule configured in this repository while the workflow remains enabled.
+   - **Legacy Check In workflow**: Kept as a compatibility/status page only. It no longer renews an expiry timer and does not delete Actions run history; manual execution is unnecessary.
+   - **Platform limits**: GitHub Actions scheduling delays, usage quotas, and platform policies still apply.
 
    ---
 
