@@ -1,28 +1,22 @@
-name: Check In
+name: Check In (No Longer Required)
 
-# ✅ 签到续期：运行此 workflow 可重置 7 天计时，保持 "Get Hot News" 正常运行
-# ✅ Renewal: Run this workflow to reset the 7-day timer and keep "Get Hot News" active
-#
-# 📌 操作方法 / How to use:
-#   1. 点击 "Run workflow" 按钮 / Click "Run workflow" button
-#   2. 每 7 天内至少运行一次 / Run at least once every 7 days
+# Legacy compatibility workflow.
+# The custom 7-day expiry/auto-disable mechanism has been removed from Get Hot News.
+# This workflow is intentionally non-destructive and does not delete Actions history.
+# Manual check-in is no longer required.
 
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  del_runs:
+  status:
     runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      contents: read
     steps:
-      - name: Delete all workflow runs
-        uses: Mattraks/delete-workflow-runs@v2
-        with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          retain_days: 0
-          keep_minimum_runs: 0
-          delete_workflow_by_state_pattern: "ALL"
-          delete_run_by_conclusion_pattern: "ALL"
+      - name: Confirm check-in is no longer required
+        run: |
+          echo "The custom 7-day expiry has been removed from Get Hot News."
+          echo "No manual check-in is required."
+          echo "This legacy workflow does not delete workflow run history."
