@@ -302,6 +302,9 @@ def main():
     summary = summarize(resolved)
     count = sum(bool(item["quote"]) for item in summary)
     print(f"Matched {len(resolved)} eligible public quotes, covering {count}/{len(LABELS)} models.")
+    for item in summary:
+        offer = item["quote"]
+        print(f"  {item['model']}: " + (f"CNY {offer['price_cny_gpu_hour']:.2f}/GPU-hour, {offer['provider']}" if offer else "no current on-demand quote"))
     if not resolved or count == 0:
         # Do not report a false price table if API schema changes.
         print("No verified price records; leaving existing TrendRadar untouched.", file=sys.stderr)
