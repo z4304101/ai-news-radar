@@ -277,21 +277,13 @@ def make_report(summary, now):
 
 
 def bark_push(bark_url, summary):
-    """Send through the same /push + device_key protocol as TrendRadar."""
-    if not bark_url:
+    """Send using TrendRadar's existing semicolon-separated Bark account config."""
+    accounts = [item.strip() for item in bark_url.split(";") if item.strip()]
+    if not accounts:
         raise ValueError("BARK_URL Actions secret is missing")
+    # Mirror the existing MAX_ACCOUNTS_PER_CHANNEL default (3).
+    accounts = accounts[:3]
 
-    parsed = urlparse(bark_url.strip())
-    key_parts = [part for part in parsed.path.split("/") if part]
-    if parsed.scheme != "https" or not parsed.netloc or not key_parts:
-        raise ValueError("Invalid BARK_URL; expected https://<bark-server>/<device-key>")
-    device_key = key_parts[0]
-    if device_key.lower() == "push":
-        raise ValueError("BARK_URL must include the device key in its path")
-
-    # Bark's JSON POST API is https://<bark-server>/push, NOT the URL
-    # https://<bark-server>/<device-key> used by one-line GET requests.
-    api_endpoint = f"{parsed.scheme}://{parsed.netloc}/push"
     updated = datetime.now(timezone(timedelta(hours=8))).strftime("%m-%d %H:%M")
     lines = [
         f"GPU 算力租赁公开报价｜北京时间 {updated}",
@@ -308,30 +300,54 @@ def bark_push(bark_url, summary):
         else:
             lines.append(f"{item['model']}: 暂无有效报价")
     lines += ["", "数据源：GPU价网，报价需以服务商实际页面核实。", SOURCE]
-    payload = {
-        "title": "TrendRadar GPU 租赁报价",
-        "markdown": "\n".join(lines),
-        "device_key": device_key,
-        "sound": "default",
-        "group": "TrendRadar GPU价格",
-        "action": "none",
-        "url": SOURCE,
-    }
+    body = "\n".join(lines)
+    successes = 0
+    for index, endpoint in enumerate(accounts, 1):
+        # The user's existing TrendRadar secret may contain two or three
+        # device URLs joined by semicolons; never treat the whole string as
+        # one device URL.
+        try:
+            parsed = urlparse(endpoint)
+            parts = [part for part in parsed.path.split("/") if part]
+            if parsed.scheme != "https" or not parsed.netloc or not parts:
+                raise ValueError("Invalid Bark account URL")
+            device_key = parts[0]
+            if device_key.lower() == "push":
+                raise ValueError("Device URL is missing its device key")
 
-    req = Request(
-        api_endpoint,
-        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-        headers={"Content-Type": "application/json; charset=utf-8"},
-        method="POST",
-    )
-    # Never print the secret, device key, payload, or Bark URL.
-    with urlopen(req, timeout=30) as response:
-        if response.status != 200:
-            raise RuntimeError(f"Bark server returned HTTP {response.status}")
-        result = json.load(response)
-        if not isinstance(result, dict) or result.get("code") != 200:
-            raise RuntimeError("Bark server did not confirm delivery acceptance")
-    print("GPU price notification accepted by Bark server (code=200).")
+            api_endpoint = f"{parsed.scheme}://{parsed.netloc}/push"
+            payload = {
+                "title": "TrendRadar GPU 租赁报价",
+                "markdown": body,
+                "device_key": device_key,
+                "sound": "default",
+                "group": "TrendRadar GPU价格",
+                "action": "none",
+            }
+            req = Request(
+                api_endpoint,
+                data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                headers={"Content-Type": "application/json; charset=utf-8"},
+                method="POST",
+            )
+            # Do not print the endpoint, secret, device key, or response body.
+            with urlopen(req, timeout=30) as response:
+                if response.status != 200:
+                    raise RuntimeError(f"HTTP status {response.status}")
+                result = json.load(response)
+                if not isinstance(result, dict) or result.get("code") != 200:
+                    raise RuntimeError("Bark did not accept the notification")
+            successes += 1
+            print(f"Bark GPU notification account {index}: accepted (code=200).")
+        except Exception as exc:
+            status = getattr(exc, "code", None)
+            detail = f"HTTP {status}" if isinstance(status, int) else type(exc).__name__
+            print(f"Bark GPU notification account {index}: failed ({detail}).",
+                  file=sys.stderr)
+    if successes == 0:
+        raise RuntimeError("All configured Bark GPU notification accounts failed")
+    print(f"GPU Bark delivery accepted by {successes}/{len(accounts)} configured accounts.")
+
 
 def main():
     now = datetime.now(timezone.utc)
