@@ -277,35 +277,61 @@ def make_report(summary, now):
 
 
 def bark_push(bark_url, summary):
+    """Send through the same /push + device_key protocol as TrendRadar."""
     if not bark_url:
-        print("BARK_URL not provided; skipping GPU price notification.")
-        return
-    lines = ["公开按量报价，元/卡·小时，非真实成交价。"]
+        raise ValueError("BARK_URL Actions secret is missing")
+
+    parsed = urlparse(bark_url.strip())
+    key_parts = [part for part in parsed.path.split("/") if part]
+    if parsed.scheme != "https" or not parsed.netloc or not key_parts:
+        raise ValueError("Invalid BARK_URL; expected https://<bark-server>/<device-key>")
+    device_key = key_parts[0]
+    if device_key.lower() == "push":
+        raise ValueError("BARK_URL must include the device key in its path")
+
+    # Bark's JSON POST API is https://<bark-server>/push, NOT the URL
+    # https://<bark-server>/<device-key> used by one-line GET requests.
+    api_endpoint = f"{parsed.scheme}://{parsed.netloc}/push"
+    updated = datetime.now(timezone(timedelta(hours=8))).strftime("%m-%d %H:%M")
+    lines = [
+        f"GPU 算力租赁公开报价｜北京时间 {updated}",
+        "单位：人民币/卡·小时；仅供询价参考，不代表真实成交价。",
+        "",
+    ]
     for item in summary:
         best = item["quote"]
         if best:
-            lines.append(f"{item['model']}: ¥{best['price_cny_gpu_hour']:.2f} ({best['provider']})")
+            lines.append(
+                f"{item['model']}: ¥{best['price_cny_gpu_hour']:.2f} "
+                f"({best['provider']})"
+            )
         else:
             lines.append(f"{item['model']}: 暂无有效报价")
-    lines.extend(["来源：GPU价网；时间、计费条件以报价页为准。", SOURCE])
-    body = "\n".join(lines)
-    payload = {"title": "GPU 租赁价格日报", "body": body,
-               "group": "GPU算力价格", "url": SOURCE}
-    endpoint = bark_url.strip()
-    if not endpoint.startswith("https://"):
-        raise ValueError("BARK_URL must use HTTPS")
-    req = Request(endpoint, data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-                  headers={"Content-Type": "application/json; charset=utf-8"},
-                  method="POST")
-    # Do not print the URL or response body because it may contain a device key.
-    with urlopen(req, timeout=20) as response:
-        if response.status != 200:
-            raise RuntimeError("Bark server returned a non-200 status")
-        raw = json.load(response)
-        if isinstance(raw, dict) and raw.get("code") not in (None, 200):
-            raise RuntimeError("Bark server did not confirm a successful push")
-    print("GPU price notification accepted by Bark server.")
+    lines += ["", "数据源：GPU价网，报价需以服务商实际页面核实。", SOURCE]
+    payload = {
+        "title": "TrendRadar GPU 租赁报价",
+        "markdown": "\n".join(lines),
+        "device_key": device_key,
+        "sound": "default",
+        "group": "TrendRadar GPU价格",
+        "action": "none",
+        "url": SOURCE,
+    }
 
+    req = Request(
+        api_endpoint,
+        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        method="POST",
+    )
+    # Never print the secret, device key, payload, or Bark URL.
+    with urlopen(req, timeout=30) as response:
+        if response.status != 200:
+            raise RuntimeError(f"Bark server returned HTTP {response.status}")
+        result = json.load(response)
+        if not isinstance(result, dict) or result.get("code") != 200:
+            raise RuntimeError("Bark server did not confirm delivery acceptance")
+    print("GPU price notification accepted by Bark server (code=200).")
 
 def main():
     now = datetime.now(timezone.utc)
