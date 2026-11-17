@@ -1,0 +1,49 @@
+name: GPU Rental Price Monitor
+
+# Independent price monitoring: the original Get Hot News workflow is untouched.
+on:
+  schedule:
+    # Daily 08:25 Beijing time, 10 minutes after the existing news crawl.
+    - cron: "25 0 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/gpu-rental-price.yml"
+      - "trendradar/gpu_price_monitor.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gpu-rental-prices-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  prices:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch public GPU rental quotes
+        env:
+          GPU_PRICE_OUTPUT: output/gpu_prices
+          # Push is a smoke test only. Scheduled and manual runs can notify.
+          GPU_PRICE_NOTIFY: ${{ github.event_name != 'push' }}
+          BARK_URL: ${{ secrets.BARK_URL }}
+        run: python trendradar/gpu_price_monitor.py
+
+      - name: Upload price table and source records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpu-rental-prices
+          path: output/gpu_prices/
+          if-no-files-found: warn
+          retention-days: 14
