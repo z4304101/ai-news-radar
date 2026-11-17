@@ -3,8 +3,8 @@ name: GPU Rental Price Monitor
 # Independent price monitoring: the original Get Hot News workflow is untouched.
 on:
   schedule:
-    # Daily 08:25 Beijing time, 10 minutes after the existing news crawl.
-    - cron: "25 0 * * *"
+    # Aligned with Get Hot News: Beijing 08:25, 14:25, 20:25.
+    - cron: "25 0,6,12 * * *"
   workflow_dispatch:
   push:
     paths:
@@ -34,8 +34,8 @@ jobs:
       - name: Fetch public GPU rental quotes
         env:
           GPU_PRICE_OUTPUT: output/gpu_prices
-          # Push is a smoke test only. Scheduled and manual runs can notify.
-          GPU_PRICE_NOTIFY: ${{ github.event_name != 'push' }}
+          # Schedule/manual runs notify; a single tagged push verifies Bark delivery.
+          GPU_PRICE_NOTIFY: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[gpu-bark-smoke]') }}
           BARK_URL: ${{ secrets.BARK_URL }}
         run: python trendradar/gpu_price_monitor.py
 
