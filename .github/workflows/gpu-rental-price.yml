@@ -43,7 +43,7 @@ jobs:
         env:
           GPU_WHOLE_OUTPUT: output/gpu_whole_prices
           # Schedule/manual runs notify; a single tagged push verifies Bark delivery.
-          GPU_WHOLE_NOTIFY: 'false' # Enable only after genuine 8-card monthly quote and Bark verification
+          GPU_WHOLE_NOTIFY: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[gpu-whole-smoke]') }}
           BARK_URL: ${{ secrets.BARK_URL }}
         run: python trendradar/gpu_whole_machine_monitor.py
 
