@@ -9,7 +9,7 @@ on:
   push:
     paths:
       - ".github/workflows/gpu-rental-price.yml"
-      - "trendradar/gpu_price_monitor.py"
+      - "trendradar/gpu_whole_machine_monitor.py"
 
 permissions:
   contents: read
@@ -31,19 +31,27 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Fetch public GPU rental quotes
+      - name: Restore previously notified whole-machine prices
+        uses: actions/cache@v4
+        with:
+          path: output/gpu_whole_prices/last_notified.sha256
+          key: gpu-whole-prices-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            gpu-whole-prices-${{ github.ref_name }}-
+
+      - name: Fetch verified eight-card whole-machine monthly rental quotes
         env:
-          GPU_PRICE_OUTPUT: output/gpu_prices
+          GPU_WHOLE_OUTPUT: output/gpu_whole_prices
           # Schedule/manual runs notify; a single tagged push verifies Bark delivery.
-          GPU_PRICE_NOTIFY: 'false' # Pause incorrect single-card notifications until whole-machine collector passes
+          GPU_WHOLE_NOTIFY: 'false' # Enable only after genuine 8-card monthly quote and Bark verification
           BARK_URL: ${{ secrets.BARK_URL }}
-        run: python trendradar/gpu_price_monitor.py
+        run: python trendradar/gpu_whole_machine_monitor.py
 
       - name: Upload price table and source records
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gpu-rental-prices
-          path: output/gpu_prices/
+          name: gpu-whole-machine-monthly-prices
+          path: output/gpu_whole_prices/
           if-no-files-found: warn
           retention-days: 14
