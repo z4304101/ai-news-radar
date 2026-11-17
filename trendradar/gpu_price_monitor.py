@@ -36,6 +36,24 @@ MODELS = (
     ("B300", r"(?<![A-Z0-9])B300(?![A-Z0-9])"),
 )
 LABELS = [name for name, _ in MODELS]
+# Keep memory variants distinct; do not label an A100-40G quote as A100-80G,
+# or an H100-NVL-94G quote as standard H100-80G.
+DISPLAY_SPECS = (
+    ("4090D 24GB", "4090D", 24),
+    ("4090 24GB", "4090", 24),
+    ("5090 32GB", "5090", 32),
+    ("L20 48GB", "L20", 48),
+    ("910B2 64GB", "910B2", 64),
+    ("PRO6000D 84GB", "PRO6000D", 84),
+    ("PRO6000 96GB", "PRO6000", 96),
+    ("A100 80GB", "A100", 80),
+    ("A800 80GB", "A800", 80),
+    ("H100 80GB", "H100", 80),
+    ("H20 96GB", "H20", 96),
+    ("H20 141GB", "H20", 141),
+    ("H200 141GB", "H200", 141),
+    ("B300 288GB", "B300", 288),
+)
 PATTERNS = [(name, re.compile(pattern, re.I)) for name, pattern in MODELS]
 SLUGS = {
     "4090": "rtx-4090", "4090D": "rtx-4090d", "5090": "rtx-5090",
@@ -221,10 +239,14 @@ def resolve_offer(offer, gpus, providers, now):
 
 def summarize(rows):
     result = []
-    for model in LABELS:
-        offers = [x for x in rows if x["model"] == model and x["billing"] == "ondemand"]
+    for label, model, vram in DISPLAY_SPECS:
+        offers = [
+            x for x in rows
+            if x["model"] == model and x["billing"] == "ondemand"
+            and str(x["vram_gb"]).strip().upper().replace("GB", "").replace("G", "").strip() == str(vram)
+        ]
         best = min(offers, key=lambda r: r["price_cny_gpu_hour"]) if offers else None
-        result.append({"model": model, "quote": best, "offer_count": len(offers)})
+        result.append({"model": label, "quote": best, "offer_count": len(offers)})
     return result
 
 
@@ -301,7 +323,7 @@ def main():
                 if (row := resolve_offer(offer, gpus, providers, now)) is not None]
     summary = summarize(resolved)
     count = sum(bool(item["quote"]) for item in summary)
-    print(f"Matched {len(resolved)} eligible public quotes, covering {count}/{len(LABELS)} models.")
+    print(f"Matched {len(resolved)} eligible public quotes, covering {count}/{len(DISPLAY_SPECS)} GPU variants.")
     for item in summary:
         offer = item["quote"]
         print(f"  {item['model']}: " + (f"CNY {offer['price_cny_gpu_hour']:.2f}/GPU-hour, {offer['provider']}" if offer else "no current on-demand quote"))
