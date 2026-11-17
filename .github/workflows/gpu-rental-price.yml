@@ -35,7 +35,7 @@ jobs:
         env:
           GPU_PRICE_OUTPUT: output/gpu_prices
           # Schedule/manual runs notify; a single tagged push verifies Bark delivery.
-          GPU_PRICE_NOTIFY: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[gpu-bark-smoke]') }}
+          GPU_PRICE_NOTIFY: 'false' # Pause incorrect single-card notifications until whole-machine collector passes
           BARK_URL: ${{ secrets.BARK_URL }}
         run: python trendradar/gpu_price_monitor.py
 
